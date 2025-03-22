@@ -12,21 +12,24 @@ POST http://localhost:4000/api/users
 Content-Type: application/json
 
 {
-  "name": "Eben Mara",
-  "email": "marae@example.com",
-  "age": 20
+  "name": "Naomi Naa",
+  "email": "naaomoinn@example.com",
+  "age": 24
 }
 
 ###Test fetching a user by ID
-GET http://localhost:4000/api/users/67deeee42ea312440c46d743
+GET http://localhost:4000/api/users/67df34ee492ddebffbaa1609
 
 ### Test updating a user
-PUT http://localhost:4000/api/users/67deeee42ea312440c46d743
+PUT http://localhost:4000/api/users/67df04702160326bfcb43a0a
 Content-Type: application/json
 
 {
-  "name": "Prince N.K Godwyll"
+  "name": "Franca Nan",
+  "email": "francenan@gmail.com",
+  "age": 43
 }
 
+
 ### Test deleting a user
-DELETE http://localhost:4000/api/users/USER_ID
+DELETE http://localhost:4000/api/users/67df04702160326bfcb43a0a
