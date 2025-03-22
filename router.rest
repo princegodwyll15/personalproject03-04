@@ -1,0 +1,32 @@
+# Test the root endpoint
+GET http://localhost:4000/
+
+### Test the API base route
+GET http://localhost:4000/api
+
+###Test fetching all users
+GET http://localhost:4000/api/users
+
+###Test creating a new user
+POST http://localhost:4000/api/users
+Content-Type: application/json
+
+{
+  "name": "Eben Mara",
+  "email": "marae@example.com",
+  "age": 20
+}
+
+###Test fetching a user by ID
+GET http://localhost:4000/api/users/67deeee42ea312440c46d743
+
+### Test updating a user
+PUT http://localhost:4000/api/users/67deeee42ea312440c46d743
+Content-Type: application/json
+
+{
+  "name": "Prince N.K Godwyll"
+}
+
+### Test deleting a user
+DELETE http://localhost:4000/api/users/USER_ID
