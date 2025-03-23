@@ -1,8 +1,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
 dotenv.config();
+const swaggerRoute = require('./routes/swagger')
 const { connectDatabase } = require('./models/userModel');
-const { userValidationRules, validate } = require('./validation/valiadate')
 const usersRoute = require('./routes/userRoute');
 
 connectDatabase();
@@ -11,18 +11,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the API Home Page');
-});
-
-// API base route
-app.get('/api', (req, res) => {
-    res.send('Welcome to the API');
-});
-
+app.use('/', swaggerRoute);
 
 // Routes
-app.use('/api', usersRoute);
+app.use('/', usersRoute);
 
 
 // Error handling middleware
