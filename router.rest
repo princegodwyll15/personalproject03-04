@@ -8,27 +8,27 @@ POST http://localhost:4000/users
 Content-Type: application/json
 
 {
-  "name": "Naomi Naa",
-  "email": "naaomoinn@example.com",
-  "age": 24
+  "name": "Prince Nant",
+  "email": "princenant@example.com",
+  "age": 19
 }
 
 ###Test fetching a user by ID
-GET http://localhost:4000/users/67deefba2ea312440c46d748
+GET http://localhost:4000/users/67e1d838ae547f10fb7a2af8
 
 ### Test updating a user
-PUT http://localhost:4000/users/67df04702160326bfcb43a0a
+PUT http://localhost:4000/users/67e1d838ae547f10fb7a2af8
 Content-Type: application/json
 
 {
-  "name": "Franca Nan",
+  "name": "Prince Nanty",
   "email": "francenan@gmail.com",
-  "age": 43
+  "age": 34
 }
 
 
 ### Test deleting a user
-DELETE http://localhost:4000/users/67df04702160326bfcb43a0a
+DELETE http://localhost:4000/users/67e1d8b2ae547f10fb7a2aff
 
 ###text admin route
 //text our admin page
