@@ -1,6 +1,6 @@
-const Mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-const userSchema = new Mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name:{
         type:String,
         required: true,

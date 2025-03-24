@@ -1,8 +1,7 @@
 const express = require('express')
 const router = express.Router();
-const mongoose = require('mongoose');
 const { User } = require('../models/userModel');
-const { userValidationRules, validate } = require('../validation/valiadate')
+const { userValidationRules, validate } = require('../validation/userValiadate')
 
 
 router.post('/users', userValidationRules(), validate, async (req,res) =>{
@@ -18,9 +17,6 @@ router.post('/users', userValidationRules(), validate, async (req,res) =>{
 
 
 router.get('/users/:id', async (req, res) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-        return res.status(400).json({ error: 'Invalid user ID format' });
-    }
     try {
         const singleUser = await User.findById(req.params.id);
         if (!singleUser) return res.status(404).json({ message: 'User not found' });
@@ -29,6 +25,7 @@ router.get('/users/:id', async (req, res) => {
         res.status(400).json({ error: err.message });
     }
 });
+
 
    router.get('/users', async (req,res) =>{
     try{
@@ -43,7 +40,7 @@ router.get('/users/:id', async (req, res) => {
 
 
    router.put('/users/:id',userValidationRules(), validate, async (req, res) => {
-    console.log(req.params); // Debugging
+    console.log(req.params); 
     try {
         const userToUpdate = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!userToUpdate) return res.status(404).json({ message: "User not found" });
@@ -52,7 +49,7 @@ router.get('/users/:id', async (req, res) => {
         res.status(400).json({ error: err.message });
     }
 });         
-
++
 router.delete('/users/:id', async (req, res) => {
     try {
         const userToDelete = await User.findByIdAndDelete(req.params.id);

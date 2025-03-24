@@ -1,19 +1,21 @@
 const express = require('express');
 const dotenv = require('dotenv');
 dotenv.config();
+const database = require('./data/database')
 const swaggerRoute = require('./routes/swagger')
-const { connectDatabase } = require('./models/userModel');
+const adminRoute = require('./routes/adminRoute')
 const usersRoute = require('./routes/userRoute');
 
-connectDatabase();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+database.connectDatabase()
 
-app.use('/', swaggerRoute);
 
 // Routes
+app.use('/', adminRoute)
+app.use('/', swaggerRoute);
 app.use('/', usersRoute);
 
 
