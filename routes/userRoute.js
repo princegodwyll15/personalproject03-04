@@ -4,7 +4,7 @@ const { User } = require('../models/userModel');
 const { userValidationRules, validate } = require('../validation/userValiadate')
 
 
-router.post('/users', userValidationRules(), validate, async (req,res) =>{
+router.post('/users',userValidationRules(), validate, async (req,res) =>{
  try{
     const newUser = new User(req.body);
     const savedUser = await newUser.save()
@@ -39,7 +39,7 @@ router.get('/users/:id', async (req, res) => {
 
 
 
-   router.put('/users/:id',userValidationRules(), validate, async (req, res) => {
+   router.put('/users/:id', userValidationRules(), validate,async (req, res) => {
     console.log(req.params); 
     try {
         const userToUpdate = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });

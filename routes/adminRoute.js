@@ -33,7 +33,7 @@ router.get('/admin', async (req, res, next) => {
 });
 
 // GET /admin/:id - Fetch a single admin by ID
-router.get('/admin/:id', adminvalidationRules(), validate, async (req, res, next) => {
+router.get('/admin/:id', async (req, res, next) => {
     try {
         const singleAdmin = await adminDatabase.findById(req.params.id);
         if (!singleAdmin) {
@@ -47,7 +47,7 @@ router.get('/admin/:id', adminvalidationRules(), validate, async (req, res, next
 });
 
 // DELETE /admin/:id - Delete an admin by ID
-router.delete('/admin/:id', adminvalidationRules(), validate, async (req, res, next) => {
+router.delete('/admin/:id', async (req, res, next) => {
     try {
         const adminToDelete = await adminDatabase.findByIdAndDelete(req.params.id);
         if (!adminToDelete) {
