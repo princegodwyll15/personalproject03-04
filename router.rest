@@ -41,6 +41,13 @@ POST http://localhost:4000/admin
 Content-Type: application/json
 
 {
-  "name": "Isaac Torsu",
-  "employeeId": "ruco002"
+  "name": "Emmanuella Dan",
+  "employeeId": "ruco005"
 }
+
+
+###
+PUT http://localhost:4000/admin
+
+###
+DELETE http://localhost:4000/admin

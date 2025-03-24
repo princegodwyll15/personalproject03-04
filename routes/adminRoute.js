@@ -22,7 +22,7 @@ router.post("/admin", adminvalidationRules(), validate, async (req, res) => {
 });
 
 // GET /admin - Fetch all admins
-router.get('/admin', adminvalidationRules(), validate, async (req, res, next) => {
+router.get('/admin', async (req, res, next) => {
     try {
         const allAdmin = await adminDatabase.find();
         res.status(200).json({ status: "success", data: allAdmin });
