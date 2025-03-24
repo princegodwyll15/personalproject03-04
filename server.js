@@ -5,10 +5,14 @@ const database = require('./data/database')
 const swaggerRoute = require('./routes/swagger')
 const adminRoute = require('./routes/adminRoute')
 const usersRoute = require('./routes/userRoute');
+const cors = require('cors');
+
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+
 
 database.connectDatabase()
 

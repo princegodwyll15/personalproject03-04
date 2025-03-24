@@ -5,9 +5,10 @@
     "description": "API for creating, deleting, and updating user data",
     "version": "1.0.0"
   },
-  "host": "personalproject03-04.onrender.com",
+  "host": "localhost:4000",
   "basePath": "/",
   "schemes": [
+    "http",
     "https"
   ],
   "paths": {
@@ -66,9 +67,6 @@
           },
           "404": {
             "description": "Not Found"
-          },
-          "422": {
-            "description": "Unprocessable Entity"
           }
         }
       },
@@ -88,9 +86,6 @@
           },
           "404": {
             "description": "Not Found"
-          },
-          "422": {
-            "description": "Unprocessable Entity"
           }
         }
       },
