@@ -5,7 +5,7 @@
     "description": "API for creating, deleting, and updating user data",
     "version": "1.0.0"
   },
-  "host": "personalproject03-04.onrender.com/",
+  "host": "personalproject03-04.onrender.com",
   "basePath": "/",
   "schemes": [
     "https"
