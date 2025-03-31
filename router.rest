@@ -1,23 +1,24 @@
 # Test the root endpoint
 
 ###Test fetching all users
-GET http://localhost:4000/users
+GET http://localhost:3000/users
 
 ###Test creating a new user
-POST http://localhost:4000/users
+POST http://localhost:3000/users
 Content-Type: application/json
 
 {
   "name": "Prince Nant",
   "email": "princenant@example.com",
+  "password": "123456789"
   "age": 19
 }
 
 ###Test fetching a user by ID
-GET http://localhost:4000/users/67e1d838ae547f10fb7a2af8
+GET http://localhost:3000/users/67e1d838ae547f10fb7a2af8
 
 ### Test updating a user
-PUT http://localhost:4000/users/67e1d838ae547f10fb7a2af8
+PUT http://localhost:3000/users/67e1d838ae547f10fb7a2af8
 Content-Type: application/json
 
 {
@@ -28,16 +29,16 @@ Content-Type: application/json
 
 
 ### Test deleting a user
-DELETE http://localhost:4000/users/67e1d8b2ae547f10fb7a2aff
+DELETE http://localhost:3000/users/67e1d8b2ae547f10fb7a2aff
 
 ###text admin route
 //text our admin page
 ### Test admin route
 // Test our admin page
-GET http://localhost:4000/admin
+GET http://localhost:3000/admin
 
 ### Create a new admin
-POST http://localhost:4000/admin
+POST http://localhost:3000/admin
 Content-Type: application/json
 
 {
@@ -47,7 +48,7 @@ Content-Type: application/json
 
 
 ###
-PUT http://localhost:4000/admin
+PUT http://localhost:3000/admin
 
 ###
-DELETE http://localhost:4000/admin
+DELETE http://localhost:3000/admin

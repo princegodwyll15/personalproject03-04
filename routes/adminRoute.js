@@ -2,24 +2,30 @@ const express = require("express");
 const router = express.Router();
 const { adminDatabase }= require("../models/adminModel");
 const { adminvalidationRules, validate } = require('../validation/adminValidate');
+const bcrypt = require('bcrypt');
+
 // POST /admin - Create a new admin
 router.post("/admin", adminvalidationRules(), validate, async (req, res) => {
     try {
-        const existingAdmin = await adminDatabase.findOne({ employeeId: req.body.employeeId });
+        const { name, employeeId, password } = req.body;
+
+        const existingAdmin = await adminDatabase.findOne({ employeeId });
         if (existingAdmin) {
-            return res.status(400).json({ 
+            return res.status(409).json({ 
                 status: "error", 
                 message: "An admin with this employeeId already exists" 
             });
         }
-        const newAdmin = new adminDatabase(req.body);
-        const saveAdmin = await newAdmin.save();
-        res.status(201).json({ status: "success", data: saveAdmin });
+        const hashedPassword = await bcrypt.hash(password, 12); 
+        const newAdmin = new adminDatabase({ name, employeeId, password: hashedPassword });
+        const savedAdmin = await newAdmin.save();
+        res.status(201).json({ status: "success", data: savedAdmin });
     } catch (err) {
-        console.error({ error: err.message });
-        res.status(400).json({ status: "error", message: err.message });
+        console.error("Error:", err.message);
+        res.status(500).json({ status: "error", message: "Internal Server Error" });
     }
 });
+
 
 // GET /admin - Fetch all admins
 router.get('/admin', async (req, res, next) => {
@@ -72,6 +78,4 @@ router.put('/admin/:id', adminvalidationRules(), validate, async (req, res, next
         next(err);
     }
 });
-
-
 module.exports = router;
