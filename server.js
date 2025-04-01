@@ -1,52 +1,34 @@
 const express = require('express');
 const dotenv = require('dotenv');
-dotenv.config();
-const database = require('./data/database');
-const swaggerRoute = require('./routes/swagger');
-const adminRoute = require('./routes/adminRoute');
-const usersRoute = require('./routes/userRoute');
-const loginlogoutRoute = require('./routes/loginlogoutRoute');
 const session = require('express-session');
 const passport = require('passport');
-const GitHubStrategy = require('passport-github2');
+const GitHubStrategy = require('passport-github2').Strategy;
 const cors = require('cors');
 
-const app = express();
+// Load environment variables
+dotenv.config();
 
-//connect to database
+// Connect to database
+const database = require('./data/database');
 database.connectDatabase();
 
-app
-  .use(
-    session({
-      secret: 'secret',
-      resave: false,
-      saveUninitialized: true,
-    })
-  )
-  .use(express.json())
-  .use(express.urlencoded({ extended: true }))
-  .use(passport.initialize())
-  .use(passport.session())
-  .use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*'); 
-    res.setHeader(
-      'Access-Control-Allow-Headers', 
-      'Origin, X-Requested-With, Content-Type, Accept, Z-Key'
-    );
-    res.setHeader(
-      'Access-Control-Allow-Methods', 
-      'POST, GET, PUT, PATCH, OPTIONS, DELETE' 
-    );
-    next();
-  })
-  .use(cors({ methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'OPTIONS'] })) 
-  .use(cors({ origin: '*' }))
-  .use('', loginlogoutRoute)
-  .use('/', adminRoute)
-  .use('/', swaggerRoute)
-  .use('/', usersRoute);
+// Create Express app
+const app = express();
 
+// Session configuration
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+// Passport configuration
+app.use(passport.initialize());
+app.use(passport.session());
+
+// GitHub OAuth configuration
 passport.use(
   new GitHubStrategy(
     {
@@ -55,21 +37,57 @@ passport.use(
       callbackURL: process.env.CALLBACK_URL,
     },
     function (accessToken, refreshToken, profile, done) {
-      // User.findOrCreate({ githubId: profile.id }, function (err, user) {
-      return done(null, profile); 
-      // });
+      return done(null, profile);
     }
   )
 );
 
+// Serialize and deserialize user
 passport.serializeUser((user, done) => {
   done(null, user);
 });
-
 passport.deserializeUser((user, done) => {
-  done(null, user); 
+  done(null, user);
 });
 
+// CORS configuration
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Z-Key'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'POST, GET, PUT, PATCH, OPTIONS, DELETE'
+  );
+  next();
+});
+app.use(cors({ methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'OPTIONS'] }));
+app.use(cors({ origin: '*' }));
+
+// Route configuration
+const swaggerRoute = require('./routes/swagger');
+const adminRoute = require('./routes/adminRoute');
+const usersRoute = require('./routes/userRoute');
+const loginlogoutRoute = require('./routes/loginlogoutRoute');
+
+app.use('', loginlogoutRoute);
+app.use('/', adminRoute);
+app.use('/', swaggerRoute);
+app.use('/', usersRoute);
+
+// GitHub OAuth callback route
+app.get(
+  '/github/callback',
+  passport.authenticate('github', { failureRedirect: '/api-docs', session: false }),
+  function (req, res) {
+    req.session.user = req.user;
+    res.redirect('/');
+  }
+);
+
+// Root route
 app.get('/', (req, res) => {
   res.send(
     req.session.user !== undefined
@@ -78,21 +96,10 @@ app.get('/', (req, res) => {
   );
 });
 
-app.get(
-    '/github/callback',
-    passport.authenticate('github', { failureRedirect: '/api-docs', session: false }),
-    function (req, res) {
-      // Successful authentication, redirect home.
-      req.session.user = req.user;
-      res.redirect('/');
-    }
-  );
-
-  
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: "Something went wrong!" });
+  res.status(500).json({ error: 'Something went wrong!' });
 });
 
 // Start the server
@@ -100,3 +107,4 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`App is running and listening on http://localhost:${port}`);
 });
+
